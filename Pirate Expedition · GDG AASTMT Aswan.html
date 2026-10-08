@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pirate Expedition · GDG on Campus AASTMT Aswan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Lora:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#e8d5a3;--paper2:#f4e7bf;--ink:#2a1f14;--rust:#a8512a;--gold:#e0a63a;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#2b2218;--paper2:#3b2e1f;--ink:#f1e3bb}}
+:root[data-theme="dark"]{--paper:#2b2218;--paper2:#3b2e1f;--ink:#f1e3bb}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{height:100%;margin:0;overflow:hidden;background:var(--paper);color:var(--ink);font-family:Lora,Georgia,serif}
+#stage{position:fixed;inset:0;overflow:hidden;background:radial-gradient(ellipse at 50% 45%,var(--paper2),var(--paper) 72%)}
+.waves{position:absolute;inset:-130px;opacity:.8;animation:drift 40s linear infinite;
+background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='60'%3E%3Cpath d='M10 30 q10 -10 20 0 t20 0 t20 0' fill='none' stroke='%23a8512a' stroke-opacity='.3' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E")}
+@keyframes drift{to{transform:translate(120px,60px)}}
+.vig{position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 170px rgba(90,50,10,.4)}
+.frame{position:absolute;inset:10px;border:2px solid var(--rust);opacity:.55;pointer-events:none;border-radius:4px}
+.gull{position:absolute;left:-60px;width:40px;opacity:.55;animation:fly 28s linear infinite}
+@keyframes fly{to{transform:translateX(calc(100vw + 140px))}}
+#world{position:absolute;left:0;top:0;width:2000px;height:1200px;overflow:visible;transform-origin:0 0;transition:transform 1.8s cubic-bezier(.65,0,.25,1)}
+.nt #world{transition:none}
+.isl{transition:opacity .8s}
+.isl .pop{transition:transform .9s cubic-bezier(.3,1.4,.5,1);transform-box:fill-box;transform-origin:50% 90%}
+.isl.on .pop{transform:scale(1.07)}
+.isl.dim{opacity:.45}
+.nm{font:400 38px 'Pirata One',serif;fill:var(--ink);stroke:var(--paper2);stroke-width:6px;paint-order:stroke;letter-spacing:1px}
+.seg{fill:none;stroke:var(--rust);stroke-width:5;stroke-linecap:round;stroke-dasharray:1 14;opacity:0;transition:opacity .8s}
+.seg.on{opacity:.85}
+.bob{transform-box:fill-box;transform-origin:50% 100%;animation:bob 3s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-6px) rotate(2deg)}}
+.eye{animation:glow 2s ease-in-out infinite}
+@keyframes glow{50%{opacity:.35}}
+.gear{transform-box:fill-box;transform-origin:center;animation:spin 6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.coin{animation:hop 1.4s ease-in-out infinite}
+@keyframes hop{50%{transform:translateY(-9px)}}
+.xmark{transform-box:fill-box;transform-origin:center;animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(1.25)}}
+#needle{transition:transform 1.4s cubic-bezier(.3,1.5,.5,1)}
+.wrap{position:fixed;top:0;bottom:0;width:min(470px,42vw);display:flex;align-items:center;pointer-events:none;z-index:5}
+.wrap.r{right:5vw}.wrap.l{left:5vw}
+.card{opacity:0;transform:translateY(18px) rotate(-1.2deg);transition:opacity .6s,transform .7s cubic-bezier(.2,1.2,.4,1);
+background:linear-gradient(160deg,var(--paper2),var(--paper));border:3px double var(--rust);border-radius:14px;padding:26px 28px;box-shadow:0 14px 40px rgba(60,30,5,.35)}
+.card.show{opacity:1;transform:none;pointer-events:auto}
+.num{font:600 .85rem Lora,serif;letter-spacing:.06em;color:var(--rust)}
+h2{font:400 clamp(2.4rem,5vw,3.6rem)/1 'Pirata One',serif;margin:6px 0 10px}
+.tag{font-style:italic;font-size:1.1rem;margin:0 0 10px;line-height:1.4}
+.desc{margin:0 0 14px;line-height:1.6;opacity:.92}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.chips span{background:var(--gold);color:#2a1f14;border:1.5px solid #2a1f14;border-radius:99px;padding:3px 12px;font-size:.82rem;font-weight:600}
+.btn{display:inline-block;font:400 1.35rem 'Pirata One',serif;color:#2a1f14;background:linear-gradient(#f9d98a,#e0a63a);border:2px solid #2a1f14;border-radius:8px 14px 8px 14px;padding:8px 26px;text-decoration:none;box-shadow:0 4px 0 #2a1f14;transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(2px);box-shadow:0 2px 0 #2a1f14}
+.btn:focus-visible,.nav:focus-visible,.dot:focus-visible{outline:3px solid var(--rust);outline-offset:3px}
+.hero{position:fixed;left:5vw;top:calc(5vh + env(safe-area-inset-top,0px));max-width:min(560px,90vw);z-index:5;opacity:0;transform:translateY(-14px);transition:opacity .8s,transform .8s;pointer-events:none}
+.hero.show{opacity:1;transform:none;pointer-events:auto}
+.hero h1{font:400 clamp(2.6rem,6vw,5rem)/.95 'Pirata One',serif;margin:8px 0 12px}
+.hero p{margin:0 0 14px;max-width:36ch;line-height:1.55}
+.hint{font-style:italic;color:var(--rust);animation:glow 2s ease-in-out infinite}
+.hud{position:fixed;left:0;right:0;bottom:calc(14px + env(safe-area-inset-bottom,0px));display:flex;justify-content:center;align-items:center;gap:14px;z-index:6}
+.nav{width:42px;height:42px;border-radius:50%;border:2px solid #2a1f14;background:var(--gold);color:#2a1f14;font:700 1.2rem Lora,serif;cursor:pointer;box-shadow:0 3px 0 #2a1f14}
+.nav:disabled{opacity:.35;cursor:default}
+.dots{display:flex;gap:10px}
+.dot{width:12px;height:12px;border-radius:50%;border:2px solid var(--ink);background:transparent;padding:0;cursor:pointer;transition:all .3s}
+.dot.on{background:var(--gold);transform:scale(1.5)}
+.keys{position:fixed;left:22px;bottom:calc(22px + env(safe-area-inset-bottom,0px));font-size:.8rem;opacity:.75;z-index:6}
+@media (max-width:760px){.keys{display:none}
+.wrap{left:0!important;right:0!important;width:auto;top:auto;bottom:calc(76px + env(safe-area-inset-bottom,0px));align-items:flex-end;padding:0 14px}
+.card{padding:16px 18px}h2{font-size:2.2rem;margin:2px 0 6px}.tag{font-size:1rem}.desc{font-size:.9rem;margin-bottom:10px}.chips{margin-bottom:12px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}#world{transition-duration:.01s}}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="waves"></div>
+  <svg class="gull" viewBox="0 0 40 20" style="top:14%"><path d="M2 14Q10 2 20 12Q30 2 38 14" fill="none" stroke="#2a1f14" stroke-width="2.5" stroke-linecap="round"/></svg>
+  <svg class="gull" viewBox="0 0 40 20" style="top:30%;animation-duration:36s;animation-delay:-14s;width:30px"><path d="M2 14Q10 2 20 12Q30 2 38 14" fill="none" stroke="#2a1f14" stroke-width="2.5" stroke-linecap="round"/></svg>
+  <svg id="world" viewBox="0 0 2000 1200">
+    <g id="ghost" opacity=".35" transform="translate(150,780)"><g class="bob" fill="none" stroke="#2a1f14" stroke-width="3" stroke-linejoin="round"><path d="M-40,0 L40,0 L28,18 L-28,18Z"/><path d="M0,0 V-60 M0,-56 Q34,-36 26,-8 H0Z"/></g></g>
+    <g id="route"></g>
+    <g transform="translate(1000,600)">
+      <circle r="80" fill="none" stroke="#2a1f14" stroke-width="2" opacity=".45"/><circle r="66" fill="none" stroke="#2a1f14" stroke-width="1" opacity=".45"/>
+      <polygon points="0,-74 9,-9 74,0 9,9 0,74 -9,9 -74,0 -9,-9" fill="#8a6a45" stroke="#2a1f14" stroke-width="2" stroke-linejoin="round"/>
+      <g id="needle"><polygon points="0,-60 7,0 -7,0" fill="#a8512a"/><polygon points="0,60 7,0 -7,0" fill="#2a1f14"/></g>
+      <circle r="6" fill="#e0a63a" stroke="#2a1f14" stroke-width="2"/>
+      <g font-family="'Pirata One',serif" font-size="22" text-anchor="middle" fill="#2a1f14"><text y="-90">N</text><text y="104">S</text><text x="98" y="7">E</text><text x="-98" y="7">W</text></g>
+    </g>
+    <g class="xmark" stroke="#a8512a" stroke-width="10" stroke-linecap="round"><path d="M1040,570 L1080,610 M1080,570 L1040,610"/></g>
+    <g id="isl"></g>
+    <path id="tmp" fill="none" stroke="none"/>
+    <g id="boat"><g class="bob">
+      <path d="M-46,-12 H46 L32,10 H-32Z" fill="#5b3a1a" stroke="#2a1f14" stroke-width="2.5" stroke-linejoin="round"/>
+      <path d="M-40,-5 H40" stroke="#e0a63a" stroke-width="3"/>
+      <path d="M46,-12 L64,-24" stroke="#2a1f14" stroke-width="3"/>
+      <rect x="-3" y="-84" width="6" height="74" fill="#3a2410"/>
+      <path d="M5,-78 Q44,-56 32,-22 H5Z" fill="#f4e7bf" stroke="#2a1f14" stroke-width="2.5" stroke-linejoin="round"/>
+      <path d="M-5,-72 Q-36,-52 -28,-24 H-5Z" fill="#f4e7bf" stroke="#2a1f14" stroke-width="2.5" stroke-linejoin="round"/>
+      <path d="M3,-100 L30,-93 L3,-85Z" fill="#1b1b1b"/><circle cx="11" cy="-93" r="2.6" fill="#fff"/>
+      <ellipse cx="0" cy="12" rx="52" ry="6" fill="none" stroke="#2aa6a6" stroke-width="3" opacity=".7"/>
+    </g></g>
+  </svg>
+  <div class="vig"></div><div class="frame"></div>
+</div>
+
+<div class="hero show" id="h0">
+  <div class="num">GDG on Campus · AASTMT Aswan</div>
+  <h1>Pirate Expedition</h1>
+  <p>Six islands. A world to build. Where will you drop anchor?</p>
+  <p class="hint">Press → to set sail</p>
+</div>
+<div class="hero" id="h1">
+  <div class="num">GDG on Campus · AASTMT Aswan</div>
+  <h1>No set course. Just a crew worth finding.</h1>
+  <p>Six crews are waiting for you. Pick yours and join the voyage.</p>
+  <a class="btn" id="join" href="#">Join GDG</a>
+  <p class="hint" style="margin-top:14px">Press ← to revisit any island</p>
+</div>
+<div class="wrap r" id="w"><div class="card" id="c"></div></div>
+
+<div class="keys">← → to sail · 0–7 to jump · F for fullscreen</div>
+<div class="hud">
+  <button class="nav" id="prev" aria-label="Previous island">←</button>
+  <div class="dots" id="dots"></div>
+  <button class="nav" id="next" aria-label="Next island">→</button>
+</div>
+
+<script>
+const BASE='<ellipse cx="150" cy="166" rx="146" ry="62" fill="#2aa6a6" opacity=".3"/><ellipse cx="150" cy="162" rx="124" ry="48" fill="#3cc0b8" opacity=".5"/><path d="M28,150C18,112 68,94 98,98C118,64 188,62 204,94C250,98 282,126 264,154C242,188 70,192 28,150Z" fill="#d9b36a" stroke="#2a1f14" stroke-width="2"/><path d="M54,142C50,114 90,104 110,106C126,80 184,78 196,104C230,108 248,128 240,146C222,170 84,172 54,142Z" fill="#6b8f3a"/>';
+const G='<g stroke="#2a1f14" stroke-width="2" stroke-linejoin="round">';
+// Edit this list: name, tagline, description, skills, position on the map, and the join link.
+const T=[
+{id:'web',name:'Web',tag:'Build for the web. Connect your ideas to the world.',desc:'Craft fast, beautiful websites and apps that anyone can open with a single link.',skills:['HTML & CSS','React','Node.js'],x:1000,y:300,link:'#',
+art:G+'<polygon class="eye" points="150,40 40,14 40,66" fill="#f9e08a" opacity=".5" stroke="none"/><path d="M134,134L141,54H159L166,134Z" fill="#f4e7bf"/><path d="M138,98H162L161,108H139ZM140,76H160L159,86H141Z" fill="#a8512a"/><rect x="139" y="38" width="22" height="16" rx="2" fill="#e0a63a"/><path d="M135,38L150,22L165,38Z" fill="#a8512a"/><circle cx="212" cy="112" r="17" fill="#2aa6a6"/><ellipse cx="212" cy="112" rx="7" ry="17" fill="none"/><path d="M195,112H229" fill="none"/></g>'},
+{id:'ai',name:'AI',tag:'Teach machines to think. Discover what comes next.',desc:'Train models that see, read and reason, from your first classifier to language models.',skills:['Machine Learning','Deep Learning','LLMs'],x:1600,y:480,link:'#',
+art:G+'<rect x="104" y="80" width="10" height="22" rx="3" fill="#8a948d"/><rect x="186" y="80" width="10" height="22" rx="3" fill="#8a948d"/><rect x="138" y="122" width="24" height="12" fill="#6e776f"/><rect x="112" y="58" width="76" height="66" rx="12" fill="#a9b4ac"/><path d="M150,58V38"/><circle cx="150" cy="33" r="6" fill="#e0a63a"/><circle class="eye" cx="133" cy="86" r="9" fill="#6ff0ff"/><circle class="eye" cx="167" cy="86" r="9" fill="#6ff0ff"/><rect x="130" y="106" width="40" height="9" rx="3" fill="#2a1f14"/><path d="M140,106V115M150,106V115M160,106V115" stroke="#a9b4ac"/></g>'},
+{id:'cyber',name:'Cybersecurity',tag:'Spot the threats. Learn to defend the digital seas.',desc:'Think like an attacker to defend like a pro: break things safely, then lock them down.',skills:['Ethical Hacking','Networks','CTFs'],x:1450,y:880,link:'#',
+art:G+'<rect x="104" y="84" width="92" height="50" fill="#9a7a56"/><rect x="92" y="58" width="30" height="76" fill="#8c6c4a"/><rect x="178" y="58" width="30" height="76" fill="#8c6c4a"/><path d="M92,58V48H100V54H106V48H114V54H122V58Z" fill="#8c6c4a"/><path d="M178,58V48H186V54H192V48H200V54H208V58Z" fill="#8c6c4a"/><path d="M142,100V91A8,8 0 0 1 158,91V100" fill="none" stroke-width="4"/><rect x="136" y="100" width="28" height="24" rx="4" fill="#e0a63a"/><circle cx="150" cy="109" r="3.5" fill="#2a1f14"/><rect x="148.5" y="109" width="3" height="9" fill="#2a1f14"/><path d="M200,48V24"/><path d="M200,24L222,30L200,37Z" fill="#1b1b1b"/></g>'},
+{id:'game',name:'Game Development',tag:'Build worlds. Play with your imagination.',desc:'Design levels, code mechanics and ship games people actually want to play.',skills:['Unity','Game Design','C#'],x:1000,y:930,link:'#',
+art:G+'<ellipse cx="150" cy="130" rx="48" ry="10" fill="#7b6a58"/><rect x="100" y="74" width="100" height="52" rx="26" fill="#a8512a"/><path d="M128,90V112M117,101H139" stroke="#f4e7bf" stroke-width="7" stroke-linecap="round" fill="none"/><circle cx="170" cy="94" r="7" fill="#e0a63a"/><circle cx="184" cy="106" r="7" fill="#2aa6a6"/><rect class="coin" x="196" y="44" width="14" height="14" fill="#e0a63a"/></g>'},
+{id:'soft',name:'Software Engineering',tag:'Build strong foundations. Craft software that lasts.',desc:'Learn how real teams plan, test and ship software that keeps working as it grows.',skills:['Architecture','Testing','Git & CI'],x:550,y:900,link:'#',
+art:G+'<path d="M118,124V134M182,124V134"/><rect x="100" y="60" width="100" height="64" rx="6" fill="#2a1f14"/><text x="150" y="104" text-anchor="middle" font-family="monospace" font-size="30" font-weight="700" fill="#6ff0ff" stroke="none">&lt;/&gt;</text><g class="gear"><circle cx="212" cy="62" r="18" fill="none" stroke="#e0a63a" stroke-width="9" stroke-dasharray="7 6"/><circle cx="212" cy="62" r="12" fill="#e0a63a"/><circle cx="212" cy="62" r="4" fill="#f4e7bf"/></g></g>'},
+{id:'data',name:'Data Science',tag:'Follow the patterns. Turn data into discoveries.',desc:'Clean messy data, find the story inside it and show it in charts people understand.',skills:['Python','Statistics','Visualization'],x:400,y:520,link:'#',
+art:G+'<rect x="98" y="102" width="24" height="30" fill="#a8512a"/><rect x="128" y="77" width="24" height="55" fill="#e0a63a"/><rect x="158" y="90" width="24" height="42" fill="#2aa6a6"/><rect x="188" y="57" width="24" height="75" fill="#a8512a"/><polyline points="110,88 140,62 170,76 200,42" fill="none" stroke-dasharray="5 4"/><g fill="#f4e7bf"><circle cx="110" cy="88" r="5"/><circle cx="140" cy="62" r="5"/><circle cx="170" cy="76" r="5"/><circle cx="200" cy="42" r="5"/></g></g>'}
+];
+const N=T.length+2, NS='http://www.w3.org/2000/svg', $=s=>document.querySelector(s);
+const P=[[230,1060],...T.map(t=>[t.x-105,t.y+100]),[955,655]];
+const names=['Start',...T.map(t=>t.name),'Treasure'];
+const world=$('#world'),boat=$('#boat'),tmp=$('#tmp'),needle=$('#needle');
+const mob=()=>innerWidth<=760;
+function curve(a,b){const mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2,dx=b[0]-a[0],dy=b[1]-a[1],k=.18;return `M${a} Q${mx-dy*k},${my+dx*k} ${b}`}
+$('#isl').innerHTML=T.map(t=>`<g class="isl" id="i-${t.id}" transform="translate(${t.x-150},${t.y-120})"><g class="pop">${BASE}${t.art}<text class="nm" x="150" y="226" text-anchor="middle">${t.name}</text></g></g>`).join('');
+$('#route').innerHTML=P.slice(0,-1).map((p,i)=>`<path class="seg" d="${curve(p,P[i+1])}"/>`).join('');
+$('#dots').innerHTML=names.map((n,i)=>`<button class="dot" data-i="${i}" title="${n}" aria-label="${n}"></button>`).join('');
+
+let cur=-1,tok=0,dir=1,raf;
+function place(p){boat.setAttribute('transform',`translate(${p[0]},${p[1]}) scale(${dir},1)`)}
+function sail(a,b,ms){
+  cancelAnimationFrame(raf);
+  const rev=a>b,lo=Math.min(a,b),hi=Math.max(a,b);
+  tmp.setAttribute('d',curve(P[lo],P[hi]));
+  const L=tmp.getTotalLength(),t0=performance.now();let lx=null;
+  (function f(now){
+    const u=Math.min(1,(now-t0)/ms),e=u<.5?2*u*u:1-Math.pow(-2*u+2,2)/2;
+    const pt=tmp.getPointAtLength(L*(rev?1-e:e));
+    if(lx!==null&&Math.abs(pt.x-lx)>.2)dir=pt.x>lx?1:-1;
+    lx=pt.x;place([pt.x,pt.y]);
+    if(u<1)raf=requestAnimationFrame(f);
+  })(t0);
+}
+function camera(i){
+  const vw=innerWidth,vh=innerHeight,m=mob();
+  let z=m?vw/1700:Math.min(vw/1700,vh/1000),wx=1000,wy=615,tx=vw/2,ty=vh/2;
+  if(i>0&&i<N-1){const t=T[i-1];wx=t.x-45;wy=t.y+15;z=m?vw/400:z*1.75;tx=m?vw/2:vw*(i%2?.3:.7);ty=m?vh*.3:vh/2}
+  world.style.transform=`translate(${tx-wx*z}px,${ty-wy*z}px) scale(${z})`;
+}
+function reveal(i){
+  if(i===0)return $('#h0').classList.add('show');
+  if(i===N-1)return $('#h1').classList.add('show');
+  const t=T[i-1];
+  $('#w').className='wrap '+(i%2?'r':'l');
+  $('#c').innerHTML=`<div class="num">Crew ${i} of ${T.length}</div><h2>${t.name}</h2><p class="tag">${t.tag}</p><p class="desc">${t.desc}</p><div class="chips">${t.skills.map(s=>`<span>${s}</span>`).join('')}</div><a class="btn" href="${t.link||'#'}" target="_blank" rel="noopener">Join the crew</a>`;
+  requestAnimationFrame(()=>$('#c').classList.add('show'));
+}
+function go(i,instant){
+  i=Math.max(0,Math.min(N-1,i));
+  if(i===cur&&!instant)return;
+  const prev=cur<0?0:cur,my=++tok;cur=i;
+  ['#c','#h0','#h1'].forEach(s=>$(s).classList.remove('show'));
+  camera(i);
+  instant?place(P[i]):sail(prev,i,1800);
+  T.forEach((t,k)=>{const g=$('#i-'+t.id);g.classList.toggle('on',i===k+1);g.classList.toggle('dim',i>0&&i<N-1&&i!==k+1)});
+  const ang=i===0?-15:i===N-1?80:Math.atan2(T[i-1].x-1000,-(T[i-1].y-600))*180/Math.PI;
+  needle.style.transform=`rotate(${ang}deg)`;
+  [...$('#route').children].forEach((s,k)=>s.classList.toggle('on',k<i));
+  document.querySelectorAll('.dot').forEach((d,k)=>d.classList.toggle('on',k===i));
+  $('#prev').disabled=i===0;$('#next').disabled=i===N-1;
+  setTimeout(()=>{if(my===tok)reveal(i)},instant?150:1600);
+}
+function fs(){try{(document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()).catch(()=>{})}catch(e){}}
+addEventListener('keydown',e=>{
+  const k=e.key;
+  if(['ArrowRight','ArrowDown','PageDown',' '].includes(k)){e.preventDefault();go(cur+1)}
+  else if(['ArrowLeft','ArrowUp','PageUp'].includes(k)){e.preventDefault();go(cur-1)}
+  else if(k==='Home')go(0);else if(k==='End')go(N-1);
+  else if(/^[0-9]$/.test(k)&&+k<N)go(+k);
+  else if(k==='f'||k==='F')fs();
+});
+let sx=0;
+addEventListener('touchstart',e=>{sx=e.touches[0].clientX},{passive:true});
+addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-sx;if(Math.abs(d)>60)go(cur+(d<0?1:-1))});
+$('#next').onclick=e=>{go(cur+1);e.currentTarget.blur()};
+$('#prev').onclick=e=>{go(cur-1);e.currentTarget.blur()};
+$('#dots').onclick=e=>{const b=e.target.closest('.dot');if(b){go(+b.dataset.i);b.blur()}};
+addEventListener('resize',()=>{document.body.classList.add('nt');camera(cur);setTimeout(()=>document.body.classList.remove('nt'),60)});
+go(0,true);
+</script>
+</body>
+</html>
